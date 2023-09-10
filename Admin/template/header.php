@@ -11,16 +11,20 @@
     </head>
     <body>
 
+    <?php $url="http://".$_SERVER['HTTP_HOST']."/SITIOAWEVO" ?> <!-- Este es el rediccionamiento de el boton see website  -->
+
             <nav class="navbar navbar-expand navbar-light bg-light">
                 <div class="nav navbar-nav">
                     <a class="nav-item nav-link active" href="#">Website Admin <span class="sr-only">(current)</span></a>
-                    <a class="nav-item nav-link" href="#">Home</a>
-                    <a class="nav-item nav-link" href="#">Books</a>
-                    <a class="nav-item nav-link" href="#">Log Out</a>
-                    <a class="nav-item nav-link" href="#">See Website</a>
+                    <a class="nav-item nav-link" href="<?php echo $url;?>/Admin/home.php">Home</a>   <!-- prestar atencion a la etiqueta echo -->
+
+                    <a class="nav-item nav-link" href="<?php echo $url;?>/Admin/section/products.php">Books</a>
+                    <a class="nav-item nav-link" href="<?php echo $url;?>/Admin/section/close.php">Log Out</a>
+
+                    <a class="nav-item nav-link" href="<?php echo $url; ?>">See Website</a>
                 </div>
             </nav>
      
         <div class="container">
-        <br/>
+        <br/><br/>
             <div class="row">
