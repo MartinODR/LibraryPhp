@@ -12,10 +12,33 @@ echo $txtID."<br/>";
 echo $txtName."<br/>";
 echo $txtImage."<br/>";
 echo $action."<br/>";
+                                                   //aca abajo es como se conecta con la base de datos SQL
+$host="localHost";
+$db="sitio";
+$user="root";
+$password="";
+
+try {
+          $connection=new PDO("mysql:host=$host;dbname=$db",$user,$password);
+          if($connection){ echo "Connected... to system ";} // condicion if (si) y mensaje de confirmacion 
+
+        } catch ( Exeption $ex) {                           //tomar info en caso de que exista una falla 
+    
+        echo $ex->getMessage();
+
+}
+
 
 switch($action){
 
+        
         case"Add":
+
+            //INSERT INTO `books` (`id`, `name`, `image`) VALUES (NULL, 'Book about PHP', 'image.jpg');
+        $sentenciaSQL=$connection->prepare("INSERT INTO `books` (`id`, `name`, `image`) VALUES (NULL, 'Book about PHP', 'image.jpg');");
+        $sentenciaSQL->execute();
+
+
             echo "Pressed Add button";
             break; 
 
