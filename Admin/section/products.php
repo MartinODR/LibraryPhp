@@ -1,4 +1,4 @@
-<?php include("../template/header.php") ?>
+<?php include("../template/header.php") ?>  <!-- esto conecta e incluye la cabecera --> 
 <?php 
        //condicion accion        si            no (vacio)                           
 $txtID=(isset($_POST['txtID']))?$_POST['txtID']:"";                             //validacion, condicion o if ternario lo que va a suceder si se cumple o no 
@@ -8,25 +8,14 @@ $txtImage=(isset($_FILES['txtImage']['name']))?$_FILES['txtImage']['name']:"";
 
 $action=(isset($_POST['action']))?$_POST['action']:"";
 
-echo $txtID."<br/>";
-echo $txtName."<br/>";
-echo $txtImage."<br/>";
-echo $action."<br/>";
-                                                   //aca abajo es como se conecta con la base de datos SQL
-$host="localHost";
-$db="sitio";
-$user="root";
-$password="";
+include("../config/db.php");  // esto conecta e incluye el contenido de db.php
 
-try {
-          $connection=new PDO("mysql:host=$host;dbname=$db",$user,$password);
-          if($connection){ echo "Connected... to system ";} // condicion if (si) y mensaje de confirmacion 
 
-        } catch ( Exeption $ex) {                           //tomar info en caso de que exista una falla 
-    
-        echo $ex->getMessage();
+                                          /*    echo $txtID."<br/>";
+         imprime en pantalla                    echo $txtName."<br/>";
+         para comprobar                         echo $txtImage."<br/>";
+                                                echo $action."<br/>";    */
 
-}
 
 
 switch($action){
@@ -34,8 +23,11 @@ switch($action){
         
         case"Add":
 
-            //INSERT INTO `books` (`id`, `name`, `image`) VALUES (NULL, 'Book about PHP', 'image.jpg');
-        $sentenciaSQL=$connection->prepare("INSERT INTO `books` (`id`, `name`, `image`) VALUES (NULL, 'Book about PHP', 'image.jpg');");
+            //INSERT INTO `books` (`id`, `name`, `image`) VALUES (NULL, 'Book about PHP', 'image.jpg'); son las instrucciones SQL copiadas de phpmyadmin
+            // se obtienen de la seccion insertar o einfügen, se insertan los datos en los campos y luego de ok te da la linea de comandos 
+        $sentenciaSQL=$connection->prepare("INSERT INTO books (name,image ) VALUES (:name,:image);"); // modificado comparar con el original, name e image son los parametros 
+        $sentenciaSQL->bindParam(':name', $txtName);                               //parametros para insertar la informacion     
+        $sentenciaSQL->bindParam(':image', $txtImage);
         $sentenciaSQL->execute();
 
 
