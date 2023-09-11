@@ -22,7 +22,6 @@ switch($action){
 
         
         case"Add":
-
             //INSERT INTO `books` (`id`, `name`, `image`) VALUES (NULL, 'Book about PHP', 'image.jpg'); son las instrucciones SQL copiadas de phpmyadmin
             // se obtienen de la seccion insertar o einfügen, se insertan los datos en los campos y luego de ok te da la linea de comandos 
         $sentenciaSQL=$connection->prepare("INSERT INTO books (name,image ) VALUES (:name,:image);"); // modificado comparar con el original, name e image son los parametros 
@@ -30,8 +29,7 @@ switch($action){
         $sentenciaSQL->bindParam(':image', $txtImage);
         $sentenciaSQL->execute();
 
-
-            echo "Pressed Add button";
+           // mensaje de confirmacion de accion // echo "Pressed Add button";
             break; 
 
         case"Modify":
@@ -42,11 +40,33 @@ switch($action){
             echo "Pressed Cancel button";
             break;     
 
+        case"Select":
+            
+            $sentenciaSQL= $connection->prepare("SELECT * FROM books WHERE id=:id");      //aqui seleccionamos los registros de acuerdo a lo que nos envian
+            $sentenciaSQL->bindParam(':id', $txtID);
+            $sentenciaSQL->execute();
+            $book=$sentenciaSQL->fetch(PDO::FETCH_LAZY);  
 
+            $txtName=$book['name'];                          //aqui muestra o asigna los valores que se recuperaron de esa seleccion en db
+            $txtImage=$book['image'];
+
+            //echo "Pressed Cancel Select";
+            break;
+        
+        case"Delete":
+            $sentenciaSQL= $connection->prepare("DELETE FROM books WHERE id=:id");            //instruccion SQL accion del boton en la db borrar id
+            $sentenciaSQL->bindParam(':id',$txtID); 
+            $sentenciaSQL->execute();
+
+            //echo "Pressed Cancel Delete";
+            break;     
 }
-
-
-
+// 1:aqui se ejecuta una instruccion SQL de seleccion de libros 
+//2: ejecutame esa instruccion (php) 
+//3: FetchAll recupera todos los registros para mostrar en la variable  
+$sentenciaSQL= $connection->prepare("SELECT * FROM books");
+$sentenciaSQL->execute();
+$BooksList=$sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);  // PDO::FETCH_ASSOC asocia los datos de la tabla y los nuevos datos
 
 
 
@@ -65,16 +85,19 @@ switch($action){
                                            <!-- !crt-form-login , formulario de agregar libros -->
                         <div class = "form-group">
                         <label for="txtID">ID:</label>
-                        <input type="text" class="form-control" name="txtID" id="txtID"  placeholder="ID">
+                        <input type="text" class="form-control" value="<?php echo $txtID; ?>" name="txtID" id="txtID"  placeholder="ID">
                         </div>
 
                             <div class = "form-group">
-                            <label for="txtID">Name:</label>
-                            <input type="text" class="form-control" name="txtName" id="txtName"  placeholder="Name of the Book">
+                            <label for="txtName">Name:</label>
+                            <input type="text" class="form-control" value="<?php echo $txtName; ?>" name="txtName" id="txtName"  placeholder="Name of the Book">
                             </div>
 
                         <div class = "form-group">
-                        <label for="txtID">Image:</label>
+                        <label for="txtName">Image:</label>
+
+                        <?php echo $txtImage; ?>
+
                         <input type="file" class="form-control" name="txtImage" id="txtImage"  placeholder="Choose the Book">
                         </div>
 
@@ -110,15 +133,32 @@ switch($action){
             </tr>
         </thead>
         <tbody>
+            <?php foreach($BooksList as $book) { ?>        
+                <tr>
+                    <td><?php echo $book['id'] ?></td>
+                    <td><?php echo $book['name'] ?></td>                   <!--Datos,se repite conforme a los datos que se van consultando-->
+                    <td><?php echo $book['image'] ?></td>
 
-            <tr>
-                <td>2</td>
-                <td>Aprende PHP</td>                   <!--Datos-->
-                <td>imagen.jpg</td>
-                <td>Select | Delete</td>
+                    <td>
+                
+                    
+                 <!--  Select | Delete --> 
 
-            </tr>
+                    <form method="post">
 
+                    <input type="hidden" name="txtID" id="txtID" value="<?php echo $book['id'] ?>"/>
+
+                    <input type="submit" name="action" value="Select" class="btn btn-primary" />
+
+                    <input type="submit" name="action" value="Delete" class="btn btn-danger" />
+
+
+                    </form>
+                
+                </td>
+
+                </tr>
+            <?php } ?>
         </tbody>
     </table>
 
