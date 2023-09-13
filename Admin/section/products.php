@@ -25,8 +25,20 @@ switch($action){
             //INSERT INTO `books` (`id`, `name`, `image`) VALUES (NULL, 'Book about PHP', 'image.jpg'); son las instrucciones SQL copiadas de phpmyadmin
             // se obtienen de la seccion insertar o einfügen, se insertan los datos en los campos y luego de ok te da la linea de comandos 
         $sentenciaSQL= $connection->prepare("INSERT INTO books (name,image ) VALUES (:name,:image);"); // modificado comparar con el original, name e image son los parametros 
-        $sentenciaSQL->bindParam(':name', $txtName);                               //parametros para insertar la informacion     
-        $sentenciaSQL->bindParam(':image', $txtImage);
+        $sentenciaSQL->bindParam(':name', $txtName);                                //parametros para insertar la informacion  
+        
+        $fecha= new DateTime();                      //esto se introduce por si coinciden los archivos se diferencian en fecha 
+        $nombreArchivo=($txtImage!="")?$fecha->getTimestamp()."_".$_FILES["txtImage"]["name"]:"image.jpg";
+
+        $tmpImage=$_FILES["txtImage"]["tmp_name"];
+
+        if($tmpImage!="") {
+
+           move_uploaded_file($tmpImage,"../../IMG/".$nombreArchivo); 
+        }
+
+           
+        $sentenciaSQL->bindParam(':image', $nombreArchivo);
         $sentenciaSQL->execute();
 
            // mensaje de confirmacion de accion // echo "Pressed Add button";
@@ -38,6 +50,13 @@ switch($action){
             $sentenciaSQL->bindParam(':name',$txtName);                     // tener cuidado con las variables, distinguen entre mayusculas y minusculas 
             $sentenciaSQL->bindParam(':id',$txtID);     
             $sentenciaSQL->execute();
+
+            if($txtImage!=""){                //instruccion se cumple si txt es diferente de vacio
+            $sentenciaSQL= $connection->prepare("UPDATE books SET image=:image WHERE id=:id");   
+            $sentenciaSQL->bindParam(':image',$txtImage);                     
+            $sentenciaSQL->bindParam(':id',$txtID);     
+            $sentenciaSQL->execute();
+            }
 
             //echo "Pressed Modify button";
             break;
@@ -60,17 +79,35 @@ switch($action){
             break;
         
         case"Delete":
-            $sentenciaSQL= $connection->prepare("DELETE FROM books WHERE id=:id");            //instruccion SQL accion del boton en la db borrar id
+
+            $sentenciaSQL= $connection->prepare("SELECT image FROM books WHERE id=:id");   
+            $sentenciaSQL->bindParam(':id', $txtID);
+            $sentenciaSQL->execute();
+            $book=$sentenciaSQL->fetch(PDO::FETCH_LAZY); 
+            
+            if( isset($book["image"]) &&($book["image"]!="image.jpg") ){        //si existe esa imagen buscala con el id y si es diferente
+                                                                                //a image.jpg y si existe en la carpeta borrala 
+                if(file_exists("../../IMG/".$book["image"])){
+
+                    unlink("../../IMG/".$book["image"]);
+                }
+
+            }
+
+
+
+
+         $sentenciaSQL= $connection->prepare("DELETE FROM books WHERE id=:id");            //instruccion SQL accion del boton en la db borrar id
             $sentenciaSQL->bindParam(':id',$txtID); 
             $sentenciaSQL->execute();
-
+        
             //echo "Pressed Cancel Delete";
             break;     
 }
 // 1:aqui se ejecuta una instruccion SQL de seleccion de libros 
 //2: ejecutame esa instruccion (php) 
 //3: FetchAll recupera todos los registros para mostrar en la variable  
-$sentenciaSQL= $connection->prepare("SELECT * FROM books");
+ $sentenciaSQL= $connection->prepare("SELECT * FROM books");
 $sentenciaSQL->execute();
 $BooksList=$sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);  // PDO::FETCH_ASSOC asocia los datos de la tabla y los nuevos datos
 
