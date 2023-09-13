@@ -48,12 +48,34 @@ switch($action){
 
             $sentenciaSQL= $connection->prepare("UPDATE books SET name=:name WHERE id=:id");   
             $sentenciaSQL->bindParam(':name',$txtName);                     // tener cuidado con las variables, distinguen entre mayusculas y minusculas 
-            $sentenciaSQL->bindParam(':id',$txtID);     
+            $sentenciaSQL->bindParam(':id',$txtID);                         //
             $sentenciaSQL->execute();
 
             if($txtImage!=""){                //instruccion se cumple si txt es diferente de vacio
-            $sentenciaSQL= $connection->prepare("UPDATE books SET image=:image WHERE id=:id");   
-            $sentenciaSQL->bindParam(':image',$txtImage);                     
+
+                $fecha= new DateTime();                       
+                $nombreArchivo=($txtImage!="")?$fecha->getTimestamp()."_".$_FILES["txtImage"]["name"]:"image.jpg";
+                $tmpImage=$_FILES["txtImage"]["tmp_name"];
+
+                move_uploaded_file($tmpImage,"../../IMG/".$nombreArchivo); 
+
+                $sentenciaSQL= $connection->prepare("SELECT image FROM books WHERE id=:id");     //instruccion de borrar pegada
+                $sentenciaSQL->bindParam(':id', $txtID);
+                $sentenciaSQL->execute();
+                $book=$sentenciaSQL->fetch(PDO::FETCH_LAZY); 
+                
+                if( isset($book["image"]) &&($book["image"]!="image.jpg") ){        
+                                                                                     
+                    if(file_exists("../../IMG/".$book["image"])){
+    
+                        unlink("../../IMG/".$book["image"]);
+                    }
+    
+                }
+
+  
+            $sentenciaSQL= $connection->prepare("UPDATE books SET image=:image WHERE id=:id");   //instruccion si tiene algo la imagen
+            $sentenciaSQL->bindParam(':image',$nombreArchivo);                                        //que actualice la informacion
             $sentenciaSQL->bindParam(':id',$txtID);     
             $sentenciaSQL->execute();
             }
