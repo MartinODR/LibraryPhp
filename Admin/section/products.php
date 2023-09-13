@@ -24,7 +24,7 @@ switch($action){
         case"Add":
             //INSERT INTO `books` (`id`, `name`, `image`) VALUES (NULL, 'Book about PHP', 'image.jpg'); son las instrucciones SQL copiadas de phpmyadmin
             // se obtienen de la seccion insertar o einfügen, se insertan los datos en los campos y luego de ok te da la linea de comandos 
-        $sentenciaSQL=$connection->prepare("INSERT INTO books (name,image ) VALUES (:name,:image);"); // modificado comparar con el original, name e image son los parametros 
+        $sentenciaSQL= $connection->prepare("INSERT INTO books (name,image ) VALUES (:name,:image);"); // modificado comparar con el original, name e image son los parametros 
         $sentenciaSQL->bindParam(':name', $txtName);                               //parametros para insertar la informacion     
         $sentenciaSQL->bindParam(':image', $txtImage);
         $sentenciaSQL->execute();
@@ -33,7 +33,13 @@ switch($action){
             break; 
 
         case"Modify":
-            echo "Pressed Modify button";
+
+            $sentenciaSQL= $connection->prepare("UPDATE books SET name=:name WHERE id=:id");   
+            $sentenciaSQL->bindParam(':name',$txtName);                     // tener cuidado con las variables, distinguen entre mayusculas y minusculas 
+            $sentenciaSQL->bindParam(':id',$txtID);     
+            $sentenciaSQL->execute();
+
+            //echo "Pressed Modify button";
             break;
 
         case"Cancel":
