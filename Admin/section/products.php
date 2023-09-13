@@ -160,8 +160,15 @@ $BooksList=$sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);  // PDO::FETCH_ASSOC asoci
 
                         <div class = "form-group">
                         <label for="txtName">Image:</label>
+                        
+                        <br>    <!-- este br baja la imagen --> 
+                       <!-- <?php echo $txtImage; ?> comentado no se nota, esto muestra el nombre de la imagen junto a-->
 
-                        <?php echo $txtImage; ?>
+                        <?php if($txtImage!=""){ ?>
+
+                            <img class="img-thumbnail rounded" src="../../IMG/<?php echo $txtImage;?>" width="70" alt="" srcset="">
+
+                        <?php   }   ?>                     
 
                         <input type="file" class="form-control" name="txtImage" id="txtImage"  placeholder="Choose the Book">
                         </div>
@@ -200,9 +207,15 @@ $BooksList=$sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);  // PDO::FETCH_ASSOC asoci
         <tbody>
             <?php foreach($BooksList as $book) { ?>        
                 <tr>
-                    <td><?php echo $book['id'] ?></td>
-                    <td><?php echo $book['name'] ?></td>                   <!--Datos,se repite conforme a los datos que se van consultando-->
-                    <td><?php echo $book['image'] ?></td>
+                    <td><?php echo $book['id']; ?></td>
+                    <td><?php echo $book['name']; ?></td>                   <!--Datos,se repite conforme a los datos que se van consultando-->
+                    <td>
+
+                    <img class="img-thumbnail rounded" src="../../IMG/<?php echo $book['image']; ?>" width="70" alt="" srcset="">
+                        
+                    
+                
+                </td>
 
                     <td>
                 
