@@ -41,6 +41,8 @@ switch($action){
         $sentenciaSQL->bindParam(':image', $nombreArchivo);
         $sentenciaSQL->execute();
 
+        header("Location:products.php"); //redirecciona
+
            // mensaje de confirmacion de accion // echo "Pressed Add button";
             break; 
 
@@ -79,12 +81,14 @@ switch($action){
             $sentenciaSQL->bindParam(':id',$txtID);     
             $sentenciaSQL->execute();
             }
+            header("Location:products.php");  //redirecciona 
 
             //echo "Pressed Modify button";
             break;
 
         case"Cancel":
-            echo "Pressed Cancel button";
+            header("Location:products.php");
+            // echo "Pressed Cancel button";
             break;     
 
         case"Select":
@@ -122,7 +126,7 @@ switch($action){
          $sentenciaSQL= $connection->prepare("DELETE FROM books WHERE id=:id");            //instruccion SQL accion del boton en la db borrar id
             $sentenciaSQL->bindParam(':id',$txtID); 
             $sentenciaSQL->execute();
-        
+            header("Location:products.php");    //redirecciona
             //echo "Pressed Cancel Delete";
             break;     
 }
@@ -150,12 +154,12 @@ $BooksList=$sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);  // PDO::FETCH_ASSOC asoci
                                            <!-- !crt-form-login , formulario de agregar libros -->
                         <div class = "form-group">
                         <label for="txtID">ID:</label>
-                        <input type="text" class="form-control" value="<?php echo $txtID; ?>" name="txtID" id="txtID"  placeholder="ID">
-                        </div>
+                        <input type="text" required readonly class="form-control" value="<?php echo $txtID; ?>" name="txtID" id="txtID"  placeholder="ID">
+                        </div>              <!-- required:necesario para proseguir ,readonly entonces el campo solo se puede leer -->
 
                             <div class = "form-group">
                             <label for="txtName">Name:</label>
-                            <input type="text" class="form-control" value="<?php echo $txtName; ?>" name="txtName" id="txtName"  placeholder="Name of the Book">
+                            <input type="text" required class="form-control" value="<?php echo $txtName; ?>" name="txtName" id="txtName"  placeholder="Name of the Book">
                             </div>
 
                         <div class = "form-group">
@@ -166,7 +170,7 @@ $BooksList=$sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);  // PDO::FETCH_ASSOC asoci
 
                         <?php if($txtImage!=""){ ?>
 
-                            <img class="img-thumbnail rounded" src="../../IMG/<?php echo $txtImage;?>" width="70" alt="" srcset="">
+                            <img class="img-thumbnail rounded" src="../../IMG/<?php echo $txtImage;?>" width="150" alt="" srcset="">
 
                         <?php   }   ?>                     
 
@@ -174,9 +178,9 @@ $BooksList=$sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);  // PDO::FETCH_ASSOC asoci
                         </div>
 
                     <div class="btn-group" role="group" aria-label="">                              <!-- b4-bgroup-default , primary -->
-                        <button type="submit" name="action" value="Add" class="btn btn-success">Add</button>
-                        <button type="submit" name="action" value="Modify" class="btn btn-warning">Modify</button>       <!-- type cambio de button a submit-->
-                        <button type="submit" name="action" value="Cancel" class="btn btn-info">Cancel</button>
+                        <button type="submit" name="action" <?php echo ($action=="Select")?"disabled":""; ?> value="Add" class="btn btn-success">Add</button>
+                        <button type="submit" name="action" <?php echo ($action!="Select")?"disabled":""; ?> value="Modify" class="btn btn-warning">Modify</button>       <!-- type cambio de button a submit-->
+                        <button type="submit" name="action" <?php echo ($action!="Select")?"disabled":""; ?> value="Cancel" class="btn btn-info">Cancel</button>
                     </div>
 
                 </form>

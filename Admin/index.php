@@ -1,8 +1,19 @@
 <?php
-if($_POST){
-    header('Location:home.php');
+session_start();
+if($_POST){                                     
+    if(($_POST['user']=="Martin")&&($_POST['password']=="123")){          
+                
+        $_SESSION['user']="ok";
+        $_SESSION['username']="Martin";
+        header('Location:home.php');
 
+   }else{
+        $message="Error: wrong username or password";
+
+    }
+    
 }
+
 ?>
 <!doctype html>
 <html lang="en">
@@ -31,6 +42,11 @@ if($_POST){
                         </div>
                         <div class="card-body">
 
+                        <?php if(isset($message)){ ?>    
+                            <div class="alert alert-danger" role="alert">
+                                <?php echo $message; ?>
+                            </div>
+                            <?php } ?>
                             <form method="POST">
 
                                 <div class = "form-group">
@@ -41,9 +57,11 @@ if($_POST){
                              
                                 </div>
 
-                                <div class="form-group">
-                                    <label for="exampleInputPassword1">Password</label>
-                                    <input type="password" class="form-control" name="Password"  placeholder="Enter your Password">
+                                <div class="form-group"> 
+
+                                    <label>Password</label>
+
+                                    <input type="password" class="form-control" name="password"  placeholder="Enter your password">
 
                                 </div>
 
