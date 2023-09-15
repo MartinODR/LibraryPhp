@@ -61,7 +61,7 @@ if($_POST){
 
                                     <label>Password</label>
 
-                                    <input type="password" class="form-control" name="password"  placeholder="Enter your password">
+                                    <input type="password" class="form-control" name="password" placeholder="Enter your password">
 
                                 </div>
 
