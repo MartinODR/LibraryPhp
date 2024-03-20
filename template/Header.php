@@ -13,7 +13,7 @@
         <ul class="nav navbar-nav">
 
             <li class="nav-item">
-                <a class="nav-link" href="#">Webeando</a>
+                <a class="nav-link" href="#">Welcome</a>
             </li>
 
             <li class="nav-item">

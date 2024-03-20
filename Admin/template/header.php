@@ -25,7 +25,7 @@ session_start();
     </head>
     <body>
 
-    <?php $url="http://".$_SERVER['HTTP_HOST']."/SITIOAWEVO" ?> <!-- Este es el rediccionamiento de el boton see website  -->
+    <?php $url="http://".$_SERVER['HTTP_HOST']."/GitHub/BookstorePhp" ?> <!-- Este es el rediccionamiento de el boton see website  -->
 
             <nav class="navbar navbar-expand navbar-light bg-light">
                 <div class="nav navbar-nav">
