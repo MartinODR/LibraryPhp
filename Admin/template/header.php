@@ -35,7 +35,7 @@ session_start();
                     <a class="nav-item nav-link" href="<?php echo $url;?>/Admin/section/products.php">Books</a>
                     <a class="nav-item nav-link" href="<?php echo $url;?>/Admin/section/close.php">Log Out</a>
 
-                    <a class="nav-item nav-link" href="<?php echo $url; ?>">See Website</a>
+                    <a class="nav-item nav-link" href="<?php echo $url; ?>" target="_blank">See Website</a>  <!--target="_blank" open link in a new tab-->
                 </div>
             </nav>
      
