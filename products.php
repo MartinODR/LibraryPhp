@@ -11,7 +11,7 @@ $BooksList=$sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
 
 <div class="col-md-3">
     <div class="card">
-        <img class="card-img-top" src="./IMG/<?php echo $book['image']; ?>" alt="">
+        <img class="card-img-top" src="./IMG/<?php echo $book['image']; ?>" alt=""  width="300" height="300">
             <div class="card-body">
                 <h4 class="card-title"><?php echo $book['name']; ?></h4>
                 <a name="" id="" class="btn btn-primary" href="#" role="button">More about</a> <!-- aqui en href agregar un enlace hacia una descripcion o hacer pagina del libro plantilla  -->

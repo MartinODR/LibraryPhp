@@ -51,7 +51,7 @@ if($_POST){
 
                                 <div class = "form-group">
 
-                                    <label>User</label>
+                                    <label for="user">User</label>
 
                                     <input type="Text" class="form-control" name="user" placeholder="Enter your username">
                              
@@ -59,7 +59,7 @@ if($_POST){
 
                                 <div class="form-group"> 
 
-                                    <label>Password</label>
+                                    <label for="password">Password</label>
 
                                     <input type="password" class="form-control" name="password" placeholder="Enter your password">
 
