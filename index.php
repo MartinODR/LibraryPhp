@@ -5,6 +5,7 @@
                 <p class="lead">This is the first step to a Store in this case, Bookstore</p>
                 <hr class="my-2">
            <!-- <img height="400" src="IMG/Monster.png" class="img-thumbnail rounded mx-auto d-block"/> -->
+                <img  src="IMG/row-books.jpg" width="400" />
                 <img  src="IMG/Monster.png" width="400" />
                 <p>Enter to the Booklist</p>
                 <p class="lead">
