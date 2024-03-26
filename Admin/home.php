@@ -4,8 +4,8 @@
 
                 <div class="col-md-12">                         
                     <div class="jumbotron">
-                        <h1 class="display-3">Welcome <?php echo $username; ?></h1>
-                        <p class="lead">Website books administration</p>
+                        <h1 class="display-3">Welcome Admin: <?php echo $username; ?></h1>
+                        <p class="lead">This is the Website books administration</p>
                         <hr class="my-2">
                         <p>More info</p>
                         <p class="lead">
